@@ -1,4 +1,4 @@
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
     # Every Vagrant virtual environment requires a box to build off of.
     config.vm.box = "precise64"
 
@@ -8,9 +8,12 @@ Vagrant::Config.run do |config|
 
     # Assign this VM to a host only network IP, allowing you to access it
     # via the IP.
-    config.vm.network :hostonly, "192.168.50.2"
-    config.vm.customize ["modifyvm", :id, "--memory", "768"]
-    config.vm.host_name = "devbox.dev"
+
+    config.vm.network :private_network, ip: "192.168.50.2"
+    config.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--memory", 768]
+    end
+    config.vm.hostname = "devbox.dev"
 
     # Provisioning settings.
     config.vm.provision :puppet do |puppet|
@@ -19,5 +22,5 @@ Vagrant::Config.run do |config|
       puppet.module_path = "manifests/modules"
     end
     # The path to the platform
-    config.vm.share_folder("v-root", "/var/www", "./web", :nfs => true)
+    config.vm.synced_folder "./web", "/var/www", :nfs => true
 end
