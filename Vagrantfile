@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.network :private_network, ip: "192.168.50.2"
     config.vm.provider "virtualbox" do |vb|
-        vb.customize ["modifyvm", :id, "--memory", 768]
+        vb.customize ["modifyvm", :id, "--memory", 1024]
     end
     config.vm.hostname = "devbox.dev"
 
